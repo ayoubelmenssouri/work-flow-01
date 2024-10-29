@@ -1,41 +1,40 @@
 name: "sequence"
 on: 
   push: 
-    branches : 
+    branches: 
       - "sequence"
 jobs:
   BUILD:
     runs-on: ubuntu-latest
     steps:
-     
+      - name: Build
         run: echo "BUILD"
 
-      
-  TEST_APP :
+  TEST_APP:
     runs-on: ubuntu-latest
-    needs : BUILD
+    needs: BUILD
     steps:
-      
+      - name: Test Application
         run: echo "TEST_APP"
-  
-  TEST_API :
+
+  TEST_API:
     runs-on: ubuntu-latest
-    needs : TEST_API
+    needs: BUILD
     steps:
-     
+      - name: Test API
         run: echo "TEST_API"
 
-  DEPLOY :
+  DEPLOY:
     runs-on: ubuntu-latest
-    needs : [TEST_API,TEST_APP]
+    needs: [TEST_API, TEST_APP]
     steps:
-     
+      - name: Deploy
         run: echo "DEPLOY"
 
-  NOTIFY_TEST_FAILURE :
+  NOTIFY_TEST_FAILURE:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
-    needs : [TEST_API,TEST_APP]
+    needs: [TEST_API, TEST_APP]
     steps:
-     
+      - name: Notify Test Failure
         run: echo "TEST FAILED"
